@@ -22,7 +22,7 @@ Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
 dat0 <- read_excel("mp-egressos.xlsx")
 
 dat1 <- dat0 %>% 
-  select(Nome, `ano defesa`, orientador, nacionalidade, municipio_defesa) 
+  select(Nome, `ano defesa`, orientador, titulo_dissertacao) 
 sd <- SharedData$new(dat1)
 
 
