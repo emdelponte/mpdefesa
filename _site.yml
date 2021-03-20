@@ -1,0 +1,14 @@
+name: "MP Defesa"
+title: "Egressos MP Defesa"
+theme: mpdefesa.css
+description: |
+  Egressos
+output_dir: "docs"
+navbar:
+  left:
+    - text: "Apresentação"
+      href: index.html
+    - text: "Consulta interativa"
+      href: egressos.html
+    
+output: distill::distill_article

@@ -1,0 +1,50 @@
+---
+title: "&nbsp;"
+output:
+  distill::distill_article
+---
+
+### Planilha interativa
+
+```{r setup, include=FALSE}
+
+library(gsheet)
+library(tidyverse)
+library(crosstalk)
+library(DT)
+library(ggthemes)
+library(janitor)
+library(cowplot)
+library(plotly)
+library(readxl)
+Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
+
+dat0 <- read_excel("mp-egressos.xlsx")
+
+dat1 <- dat0 %>% 
+  select(Nome, `ano defesa`, orientador, nacionalidade, municipio_defesa) 
+sd <- SharedData$new(dat1)
+
+
+```
+
+
+
+```{r echo=FALSE, layout="l-body-outset"}
+
+bscols(
+ filter_slider("Ano de defesa", "Restringe aos anos", sd, ~`ano defesa`,
+              round = TRUE),
+
+filter_select("orientador", "Orientador", sd, ~orientador,
+              multiple = FALSE))
+
+ datatable(sd, rownames = FALSE,
+           extensions = c("Buttons"),
+             class = 'table-bordered table-condensed',
+           options = list(
+    dom = "Bfrtip", buttons = c("excel")))
+           
+
+
+```
