@@ -19,10 +19,13 @@ library(plotly)
 library(readxl)
 Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
 
-dat0 <- read_excel("mp-egressos.xlsx")
+dat0 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1jKyRWA0YrD6tqW8zayPexHSuXvrKAWnWbl09OG5AHxU/edit?usp=sharing")
 
 dat1 <- dat0 %>% 
-  select(Nome, `ano defesa`, orientador, titulo_dissertacao) 
+  select(Nome, `ano defesa`, orientador, titulo_dissertacao,
+         link1, link_dissertacao, link2) %>% 
+  unite("link3", link1, link_dissertacao) %>% 
+  unite("link", link3, link2)
 sd <- SharedData$new(dat1)
 
 
@@ -39,7 +42,9 @@ bscols(
 filter_select("orientador", "Orientador", sd, ~orientador,
               multiple = FALSE))
 
- datatable(sd, rownames = FALSE,
+ datatable(sd, 
+           escape = FALSE,
+           rownames = FALSE,
            extensions = c("Buttons"),
              class = 'table-bordered table-condensed',
            options = list(
