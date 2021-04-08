@@ -8,7 +8,9 @@ navbar:
   left:
     - text: "Apresentação"
       href: index.html
-    - text: "Consulta interativa"
+    - text: "Consulta de dissertações"
       href: egressos.html
+    - text: "Mapa dos egressos"
+      href: map.html
     
 output: distill::distill_article

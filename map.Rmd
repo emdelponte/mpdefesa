@@ -1,0 +1,93 @@
+---
+title: "Mapa de egressos"
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+
+---
+```{r setup, include=FALSE}
+
+library(gsheet)
+library(tidyverse)
+library(crosstalk)
+library(DT)
+library(ggthemes)
+library(janitor)
+library(cowplot)
+library(plotly)
+library(readxl)
+Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
+
+dat0 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1jKyRWA0YrD6tqW8zayPexHSuXvrKAWnWbl09OG5AHxU/edit?usp=sharing")
+
+dat1 <- dat0 %>% 
+   
+  unite(link3, link1, link_dissertacao, sep = "") %>% 
+  unite(link, link3, link2, sep = "")
+sd <- SharedData$new(dat1)
+
+set.seed(1000)
+dat1$lat <- round(jitter(dat1$lat, factor = 1, amount = 0.001), 4)
+dat1$lon <- round(jitter(dat1$lon, factor = 1, amount = 0.001), 4)
+```
+
+
+
+
+```{r echo=FALSE, layout="l-page"}
+library(crosstalk)
+bscols(
+  filter_slider("Ano", "Ano de defesa", sd, ~`ano defesa`, round = TRUE),
+  filter_select("Orientador", "Orientador", sd, ~orientador)
+)
+
+
+
+```
+
+
+
+
+```{r echo=FALSE, layout="l-page", fig.height=5}
+library(RColorBrewer)
+library(htmltools)
+library(leaflet)
+
+leaflet(data = sd, width = "100%") %>%
+  setView(-1, -1, zoom = 3) %>%
+  addProviderTiles("Esri.WorldImagery", group = "Aerial") %>%
+  addProviderTiles("OpenTopoMap", group = "Terrain") %>%
+  addScaleBar("bottomright") %>%
+  addProviderTiles(providers$CartoDB.Voyager, group = "Default") %>%
+  addLayersControl(
+    baseGroups = c("Default", "Aerial", "Terrain"),
+    
+    options = layersControlOptions(collapsed = T)
+  ) %>%
+  addCircleMarkers(
+  
+    radius = 6,
+    fillOpacity = 1,
+    weight = 0.5,
+    color = "black",
+    label = paste(dat1$Nome, "+ info"),
+  
+    
+    popup = paste(
+      "<h3>Informações</h3>",
+      "Egresso:", dat1$"Nome", "<br>",
+      "Defesa", dat1$"data defesa", "</i>", "<br>",
+      "Orientador:", dat1$"orientador", "<br>",
+      "Link da dissertação:", dat1$"link", "<br>",
+      "Filiação atual:", dat1$"filiação_hoje", "<br>" )
+
+  ) %>%
+
+  addEasyButton(easyButton(
+    icon="fa-globe", title="Zoom to Level 4",
+    onClick=JS("function(btn, map){ map.setZoom(4); }"))) 
+```
+
+
+
