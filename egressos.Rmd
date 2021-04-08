@@ -2,6 +2,8 @@
 title: "&nbsp;"
 output:
   distill::distill_article
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ### Planilha interativa
@@ -24,8 +26,8 @@ dat0 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1jKyRWA0YrD6tqW8zayPe
 dat1 <- dat0 %>% 
   select(Nome, `ano defesa`, orientador, titulo_dissertacao,
          link1, link_dissertacao, link2) %>% 
-  unite("link3", link1, link_dissertacao) %>% 
-  unite("link", link3, link2)
+  unite(link3, link1, link_dissertacao, sep = "") %>% 
+  unite(link, link3, link2, sep = "")
 sd <- SharedData$new(dat1)
 
 
