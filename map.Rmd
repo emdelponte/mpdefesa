@@ -68,12 +68,13 @@ leaflet(data = sd, width = "100%") %>%
     
     options = layersControlOptions(collapsed = T)
   ) %>%
+  
   addCircleMarkers(
   
     radius = 6,
-    fillOpacity = 1,
+    fillOpacity = 0.6,
     weight = 0.5,
-    color = "black",
+    color = "green",
     label = paste(dat1$Nome, "+ info"),
   
     
