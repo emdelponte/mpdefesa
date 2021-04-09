@@ -8,9 +8,16 @@ navbar:
   left:
     - text: "Apresentação"
       href: index.html
-    - text: "Consulta de dissertações"
-      href: egressos.html
+    - text: "Consulta Egressos"
+      href: egressos1.html
     - text: "Mapa dos egressos"
       href: map.html
+    - text: "Consulta dissertações"
+      href: egressos.html
+    - text: "Sumários estatísticos"
+      href: graficos.html
+      menu:
+        - text: "Defesas ano e estado de origem"
+          href: sumario-ano.html
     
 output: distill::distill_article

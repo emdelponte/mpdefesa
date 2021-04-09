@@ -1,0 +1,66 @@
+---
+title: "Defesas por ano"
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+
+```{r setup, include=FALSE}
+
+library(gsheet)
+library(tidyverse)
+library(ggthemes)
+library(cowplot)
+
+Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
+
+dat0 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1jKyRWA0YrD6tqW8zayPexHSuXvrKAWnWbl09OG5AHxU/edit?usp=sharing")
+
+
+
+```
+
+## Defesas por ano
+
+```{r echo=FALSE}
+
+dat0 %>% 
+  group_by(`ano defesa`, filiação_mudou) %>% 
+  tally() %>% 
+  select(everything(), ano = `ano defesa`) %>% 
+  ggplot(aes(ano, n, fill = filiação_mudou))+
+  geom_col(color = "darkgreen")+
+  scale_fill_brewer(palette = 5)+
+  theme_minimal_hgrid()+
+  labs(fill = "Filiação mudou?",
+       y = "Número de defesas",
+       x = "Ano de defesa")
+
+```
+
+
+
+## Estado de origem 
+
+
+```{r echo=FALSE}
+
+dat0 %>% 
+  group_by(estado_defesa, filiação_mudou) %>% 
+  tally() %>% 
+  arrange() %>% 
+  ggplot(aes(estado_defesa, n,  fill = filiação_mudou))+
+  geom_col(color = "darkgreen")+
+  scale_fill_brewer(palette = 5)+
+  theme_minimal_vgrid()+
+  coord_flip()+
+  labs(fill = "Filiação mudou?",
+       y = "Número de defesas",
+       x = "")
+
+```

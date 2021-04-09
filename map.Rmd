@@ -39,7 +39,10 @@ dat1$lon <- round(jitter(dat1$lon, factor = 1, amount = 0.001), 4)
 library(crosstalk)
 bscols(
   filter_slider("Ano", "Ano de defesa", sd, ~`ano defesa`, round = TRUE),
-  filter_select("Orientador", "Orientador", sd, ~orientador)
+  filter_select("Orientador", "Orientador", sd, ~orientador, multiple = FALSE),
+   filter_select("Nome do estudante", "Nome do estudante", sd, ~Nome,
+                 multiple = FALSE),
+  filter_select("Estado", "Estado", sd, ~estado_defesa, multiple = FALSE)
 )
 
 

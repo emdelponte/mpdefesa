@@ -1,0 +1,63 @@
+---
+title: "Dados dos egressos"
+output:
+  distill::distill_article
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+
+```{r setup, include=FALSE}
+
+library(gsheet)
+library(tidyverse)
+library(crosstalk)
+library(DT)
+library(ggthemes)
+library(janitor)
+library(cowplot)
+library(plotly)
+library(readxl)
+Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
+
+dat0 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1jKyRWA0YrD6tqW8zayPexHSuXvrKAWnWbl09OG5AHxU/edit?usp=sharing")
+
+dat1 <- dat0 %>% 
+  select(Nome, `data ingresso`, `data defesa`, `ano defesa`, orientador,
+         filiação_defesa, filiação_hoje, municipio_hoje, estado_hoje)
+       
+sd <- SharedData$new(dat1)
+
+
+```
+
+
+
+```{r echo=FALSE, layout="l-page"}
+
+bscols(
+ filter_slider("Ano de defesa", "Restringe aos anos", sd, ~`ano defesa`,
+              round = TRUE),
+ 
+ filter_select("Nome", "Nome", sd, ~Nome,
+              multiple = FALSE),
+
+filter_select("Município hoje", "Município hoje", sd, ~municipio_hoje,
+              multiple = FALSE)
+
+
+  )
+
+ datatable(sd, 
+           escape = FALSE,
+           rownames = FALSE,
+           extensions = c("Buttons"),
+             class = 'table-bordered table-condensed',
+           options = list(
+              pageLength = 6,
+    dom = "Bfrtip", buttons = c("excel")))
+           
+
+
+```
