@@ -1,5 +1,5 @@
 ---
-title: "&nbsp;"
+title: "Nuvem de assuntos"
 output:
   distill::distill_article:
     toc: true
@@ -20,8 +20,8 @@ library(cowplot)
 library(readxl)
 Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
 
-dat0 <- read_excel("mp-egressos.xlsx")
 
+dat0 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1jKyRWA0YrD6tqW8zayPexHSuXvrKAWnWbl09OG5AHxU/edit?usp=sharing")
 
 dat1 <- dat0 %>% 
   select(Nome, `ano defesa`, orientador, titulo_dissertacao) 

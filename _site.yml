@@ -19,5 +19,7 @@ navbar:
       menu:
         - text: "Defesas ano e estado de origem"
           href: sumario-ano.html
+        - text: "Nuvem de assuntos"
+          href: graficos-assuntos.html
     
 output: distill::distill_article
